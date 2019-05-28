@@ -1,3 +1,4 @@
 # JanusGraph
 
-java api
+1. java api
+2. doc
