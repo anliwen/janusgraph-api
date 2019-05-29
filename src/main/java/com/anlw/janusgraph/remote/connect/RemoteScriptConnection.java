@@ -15,7 +15,7 @@ public class RemoteScriptConnection {
 
 	private static volatile Cluster cluster = null;
 
-	private static final Class<RemoteScriptConnection> CLASS_LOCL = RemoteScriptConnection.class;
+	private static final Class<RemoteScriptConnection> CLASS_LOCK = RemoteScriptConnection.class;
 
 	private static final String INVOKE_CLASS = "gremlin.remote.driver.clusterFile";
 
@@ -25,7 +25,7 @@ public class RemoteScriptConnection {
 	// using the remote driver for schema
 	public static Client getClient() throws Exception {
 		LOGGER.info("open client...");
-		synchronized (CLASS_LOCL) {
+		synchronized (CLASS_LOCK) {
 			if (client == null) {
 				Configuration conf = new PropertiesConfiguration("config/client/remote-graph.properties");
 				cluster = Cluster.open(conf.getString(INVOKE_CLASS));
@@ -37,6 +37,7 @@ public class RemoteScriptConnection {
 
 	public static void closeClient() throws Exception {
 		LOGGER.info("closing client");
+		
 		try {
 			if (cluster != null) {
 				// the cluster closes all of its clients

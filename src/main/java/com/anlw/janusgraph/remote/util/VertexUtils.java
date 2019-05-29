@@ -97,5 +97,9 @@ public class VertexUtils {
 			e.printStackTrace();
 		}
 	}
+	//根据标签进行查询
+	//根据单属性key进行查询
+	//根据但属性value进行查询
+	//根据但属性key-value进行查询
 
 }

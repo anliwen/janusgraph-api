@@ -13,7 +13,7 @@ public class RemoteGraphConnection {
 
 	private static volatile GraphTraversalSource g = null;
 
-	private static final Class<RemoteGraphConnection> CLASS_LOCL = RemoteGraphConnection.class;
+	private static final Class<RemoteGraphConnection> CLASS_LOCK = RemoteGraphConnection.class;
 
 	private RemoteGraphConnection() {
 	}
@@ -22,7 +22,7 @@ public class RemoteGraphConnection {
 	public static GraphTraversalSource getGraphTraversalSource() throws Exception {
 
 		LOGGER.info("open graph...");
-		synchronized (CLASS_LOCL) {
+		synchronized (CLASS_LOCK) {
 			if (g == null) {
 				Configuration conf = new PropertiesConfiguration("config/client/remote-graph.properties");
 				return AnonymousTraversalSource.traversal().withRemote(conf);
