@@ -15,6 +15,12 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
+/**
+ * 
+ * @author Anlw
+ *
+ * @date May 31, 2019
+ */
 public class RemoteAPI {
 
 	// 获取远程Server连接
