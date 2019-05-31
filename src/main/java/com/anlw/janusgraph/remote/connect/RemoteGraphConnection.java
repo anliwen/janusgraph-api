@@ -7,6 +7,12 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * @author Anlw
+ *
+ * @date May 31, 2019
+ */
 public class RemoteGraphConnection {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RemoteGraphConnection.class);
