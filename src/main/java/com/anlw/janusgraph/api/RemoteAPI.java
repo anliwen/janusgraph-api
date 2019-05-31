@@ -56,80 +56,100 @@ public class RemoteAPI {
 		g.V().drop().iterate();
 	}
 
-	// 查询顶点，就是根据顶点的ID，标签，key，value来回相互查询
+	// 1.查询顶点，就是根据顶点的ID，Label，Key，Value作为条件查询Vertex
+	// 2.next()后指针指向当前节点，用于添加，查询后使用
+	// 3.iterate()后指针指向下一个节点，用于删除后使用
+	// 4.查询结果如果使用next则返回符合条件的第一个Vertex，所以查询后的结果都应该使用toList()
+	// 5.所有的查询都需要适可而止，否则在数据量巨大的情况下容易发生卡死
+	// 6.JanusGraph使用fluent api进行多条件查询，查询是逐级递减过滤，而并非'or'和'and'的关系
 	public static void queryVertex(GraphTraversalSource g) {
-		// 查询所有顶点，这个方法不推荐使用，数据量大的时候会卡死，推荐遍历
+		// 基本查询
+		// 查询所有顶点
 		List<Vertex> list1 = g.V().toList();
 		list1.forEach((v) -> {
 			System.out.println(v.id());
 		});
 
-		// 根据标签查询顶点，这个方法不推荐使用，数据量大的时候会卡死，推荐遍历
-		List<Vertex> list2 = g.V().hasLabel("teacher").toList();
+		// 根据ID查询顶点
+		List<Vertex> list2 = g.V("8224").toList();
 		list2.forEach((v) -> {
 			System.out.println(v.id());
 		});
 
-		// 根据单属性查看顶点
-		List<Vertex> list3 = g.V().has("name", "zhangsan").toList();
+		// 根据标签查询顶点
+		List<Vertex> list3 = g.V().hasLabel("teacher").toList();
 		list3.forEach((v) -> {
 			System.out.println(v.id());
 		});
 
-		// 根据多属性查看顶点
-		List<Vertex> list4 = g.V().has("name", "Iverson").has("age", 37).toList();
+		// 根据单属性查看顶点
+		List<Vertex> list4 = g.V().has("name", "zhangsan").toList();
 		list4.forEach((v) -> {
 			System.out.println(v.id());
 		});
 
-		// 根据属性key的不包含查询，属性中key不包含name的所有顶点
-		List<Vertex> list5 = g.V().hasNot("name").toList();
+		// 根据多属性查看顶点
+		List<Vertex> list5 = g.V().has("name", "Iverson").has("age", 37).toList();
 		list5.forEach((v) -> {
 			System.out.println(v.id());
 		});
 
-		// 根据单个ID查看顶点
-		Map<Object, Object> map1 = g.V(20656).valueMap().next();
+		// 根据属性key的不包含查询，属性中key不包含name的所有顶点
+		List<Vertex> list6 = g.V().hasNot("name").toList();
+		list6.forEach((v) -> {
+			System.out.println(v.id());
+		});
+
+		// 根据属性key的不包含查询，属性中key不包含name的所有顶点
+		List<Vertex> list7 = g.V().has("name").toList();
+		list7.forEach((v) -> {
+			System.out.println(v.id());
+		});
+
+		// 符合查询，包括一些具体的Label/Key等的查询，其实就是根据上述基本查询或者基于fluent
+		// api查询出的多个或者一个Vertex，然后在基于该Vertex查询其具体的信息
+		// 根据单个ID查看顶点的所有Key-Value
+		Map<Object, Object> map1 = g.V(40968384).valueMap().next();
 		map1.forEach((key, value) -> {
 			System.out.println(key + "---" + value);
 		});
 
-		// 根据多个ID查看顶点
-		List<Map<Object, Object>> list7 = g.V(20656, 24752).valueMap().toList();
-		list7.forEach((map) -> {
+		// 根据多个ID查看顶点的所有Key-Value
+		List<Map<Object, Object>> list8 = g.V(40968384, 8224).valueMap().toList();
+		list8.forEach((map) -> {
 			map.forEach((key, value) -> {
 				System.out.println(key + "---" + value);
 			});
 		});
 
-		// 根据属性查看顶点的标签
-		List<String> list8 = g.V().has("name", "zhangsan").label().toList();
-		list8.forEach((v) -> {
+		// 根据属性(Key-Value)查看顶点的标签
+		List<String> list9 = g.V().has("name", "zhangsan").label().toList();
+		list9.forEach((v) -> {
 			System.out.println(v);
 		});
 
-		// 根据属性查看顶点的key-value
-		List<Map<Object, Object>> list9 = g.V().has("name", "lisi").valueMap().toList();
-		list9.forEach((map) -> {
+		// 根据属性(Key-Value)查看顶点的Key-Value
+		List<Map<Object, Object>> list10 = g.V().has("name", "lisi").valueMap().toList();
+		list10.forEach((map) -> {
 			map.forEach((key, value) -> {
 				System.out.println(key + "---" + value);
 			});
 		});
 
 		// 查看所有顶点的标签，toSet为去重，如果不去重请使用toList
-		Set<String> list10 = g.V().label().toSet();
-		list10.forEach((v) -> {
+		Set<String> list11 = g.V().label().toSet();
+		list11.forEach((v) -> {
 			System.out.println(v);
 		});
 
 		// 根据标签和属性一起查
-		List<Vertex> list11 = g.V().hasLabel("teacher").has("name", "zhangsan").toList();
-		list11.forEach((v) -> {
+		List<Vertex> list12 = g.V().hasLabel("teacher").has("name", "zhangsan").toList();
+		list12.forEach((v) -> {
 			System.out.println(v.id());
 		});
 
 		// 根据ID查询顶点
-		Vertex v = g.V(32896).next();
+		Vertex v = g.V(40968384).next();
 		System.out.println(v.label());
 	}
 
@@ -158,20 +178,81 @@ public class RemoteAPI {
 
 	// 查看边
 	public static void queryEdge(GraphTraversalSource g) {
-		System.out.println(g.V().has("name", "Iverson").as("a").outE().as("b").inV().has("age",35).as("c").select("a").next());
-		System.out.println(g.V().has("name", "Iverson").as("a").outE().as("b").inV().has("age",35).as("c").select("b").next());
-		System.out.println(g.V().has("name", "Iverson").as("a").outE().as("b").inV().has("age",35).as("c").select("c").next());
-		//System.out.println(g.V(40992920).outE().label().next());
+		// 选择一个Vertex->选择出去的线outE->进入指定的Vertex inV
+		// 选择一个Vertex->选择进来的线inE->选择出自哪个Vertex outV
+		Vertex v1 = (Vertex) (g.V().has("name", "Iverson").as("a").outE().as("b").inV().has("age", 34).as("c")
+				.select("a").next());
+		System.out.println(v1.id());
+		Edge e = (Edge) (g.V().has("name", "Iverson").as("a").outE().as("b").inV().has("age", 34).as("c").select("b")
+				.next());
+		System.out.println(e.id());
+		Vertex v2 = (Vertex) (g.V().has("name", "Iverson").as("a").outE().as("b").inV().has("age", 34).as("c")
+				.select("c").next());
+		System.out.println(v2.id());
+		// 选择ID为40980672的顶点所有进来的边的id，可能是一条也可能是多条
+		System.out.println(g.V(40980672).inE().id().toList());
+	}
+
+	// 操作属性
+	// 操作属性也是基于上述查询结果进行操作，返回值等与查询一样，唯一不一样的就是对查询结果做了修改
+	public static void operateVertexEdgeProperty(GraphTraversalSource g) {
+
+		// 根据顶点ID对单个顶点增加/修改属性，有则修改，无则增加
+		Vertex v1 = g.V(57520).property("name", "kobe").next();
+		System.out.println(v1.id());
+
+		// 根据顶点ID对多个顶点增加/修改属性，有则修改，无则增加
+		List<Vertex> list1 = g.V(57520, 53424).property("sex", "女").toList();
+		list1.forEach((v) -> {
+			System.out.println(v.id());
+		});
+
+		// 根据顶点ID(多个或者单个顶点)查看所有属性值
+		List<Object> list2 = g.V(57520, 53424).values().toList();
+		list2.forEach((v) -> {
+			System.out.println(v);
+		});
+
+		// 根据顶点ID(多个或者单个顶点)查看具体key(单个或多个key)的属性值
+		List<Object> list3 = g.V(57520, 53424).values("name").toList();
+		list3.forEach((v) -> {
+			System.out.println(v);
+		});
+
+		// 根据顶点属性(多个或者单个顶点)查看所有属性值
+		List<Object> list4 = g.V().has("name", "kobe").values().toList();
+		list4.forEach((v) -> {
+			System.out.println(v);
+		});
+
+		// 根据顶点属性(多个或者单个顶点)查看具体key(单个或多个key)的属性值
+		List<Object> list5 = g.V().has("name", "Iverson").values("name", "age").toList();
+		list5.forEach((v) -> {
+			System.out.println(v);
+		});
+
+		// 删除顶点属性
+		g.V(53424).properties("name").drop().iterate();
+
+		// 根据边ID增加/修改属性，有则修改，无则增加
+		Edge e1 = g.E("hee-1580-2e51-18ds").property("name", "classmates").next();
+		System.out.println(e1.id());
+
+		// 查看边属性
+		List<Map<Object, Object>> list6 = g.E("hee-1580-2e51-18ds").valueMap().toList();
+		list6.forEach((map) -> {
+			map.forEach((key, value) -> {
+				System.out.println(key + "---" + value);
+			});
+		});
+
+		// 删除所有边或者具体边
+		g.E().drop().iterate();
 	}
 
 	public static void main(String[] args) throws Exception {
 		GraphTraversalSource g = getConnection();
-		//dropAllVertex(getConnection());
-		// addVertex(g);
-		// queryVertex(g);
-		// addEdge(g);
-		//queryEdge(g);
-		System.out.println(g.V(53424).outE().label().next());
+		System.out.println(g.V(40980672).inE().id().toList());
+		System.exit(1);
 	}
-
 }
