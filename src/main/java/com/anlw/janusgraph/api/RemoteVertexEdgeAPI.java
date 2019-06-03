@@ -21,7 +21,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
  *
  * @date May 31, 2019
  */
-public class RemoteAPI {
+public class RemoteVertexEdgeAPI {
 
 	// 获取远程Server连接
 	public static GraphTraversalSource getConnection() throws Exception {
