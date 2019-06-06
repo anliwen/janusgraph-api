@@ -258,7 +258,7 @@ public class RemoteVertexEdgeAPI {
 
 	public static void main(String[] args) throws Exception {
 		GraphTraversalSource g = getConnection();
-		System.out.println(g.V(40980672).inE().id().toList());
+		g.addV();
 		System.exit(0);
 	}
 }
