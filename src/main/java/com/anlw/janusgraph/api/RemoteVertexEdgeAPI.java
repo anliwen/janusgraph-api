@@ -113,7 +113,7 @@ public class RemoteVertexEdgeAPI {
 		});
 
 		// 符合查询，包括一些具体的Label/Key等的查询，其实就是根据上述基本查询或者基于fluent
-		// api查询出的多个或者一个Vertex，然后在基于该Vertex查询其具体的信息
+		// API查询出的多个或者一个Vertex，然后在基于该Vertex查询其具体的信息
 		// 根据单个ID查看顶点的所有Key-Value
 		Map<Object, Object> map1 = g.V(40968384).valueMap().next();
 		map1.forEach((key, value) -> {
