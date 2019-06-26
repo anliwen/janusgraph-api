@@ -1,4 +1,4 @@
-package com.anlw.janusgraph.remote.connect;
+package com.anlw.janusgraph.api.remote.connect;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -35,7 +35,8 @@ public class RemoteScriptConnection {
 			if (client == null) {
 				Configuration conf = new PropertiesConfiguration("config/client/remote-graph.properties");
 				cluster = Cluster.open(conf.getString(INVOKE_CLASS));
-				return cluster.connect();
+				client = cluster.connect();
+				return client;
 			}
 		}
 		return client;
@@ -43,7 +44,7 @@ public class RemoteScriptConnection {
 
 	public static void closeClient() throws Exception {
 		LOGGER.info("closing client");
-		
+
 		try {
 			if (cluster != null) {
 				// the cluster closes all of its clients

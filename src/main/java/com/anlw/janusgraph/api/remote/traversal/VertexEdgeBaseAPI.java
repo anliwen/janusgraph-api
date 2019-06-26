@@ -1,10 +1,5 @@
 package com.anlw.janusgraph.api.remote.traversal;
 
-import static com.anlw.janusgraph.remote.constant.Constants.IN_V;
-import static com.anlw.janusgraph.remote.constant.Constants.LABEL;
-import static com.anlw.janusgraph.remote.constant.Constants.OUT_V;
-import static com.anlw.janusgraph.remote.constant.Constants.REASON;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +17,11 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
  * @date May 31, 2019
  */
 public class VertexEdgeBaseAPI {
+
+	public static final String LABEL = "label";
+	public static final String OUT_V = "outV";
+	public static final String IN_V = "inV";
+	public static final String REASON = "reason";
 
 	// 获取远程Server连接
 	public static GraphTraversalSource getConnection() throws Exception {

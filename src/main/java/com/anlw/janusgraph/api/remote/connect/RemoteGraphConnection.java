@@ -1,4 +1,4 @@
-package com.anlw.janusgraph.remote.connect;
+package com.anlw.janusgraph.api.remote.connect;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -31,7 +31,8 @@ public class RemoteGraphConnection {
 		synchronized (CLASS_LOCK) {
 			if (g == null) {
 				Configuration conf = new PropertiesConfiguration("config/client/remote-graph.properties");
-				return AnonymousTraversalSource.traversal().withRemote(conf);
+				g = AnonymousTraversalSource.traversal().withRemote(conf);
+				return g;
 			}
 		}
 		return g;

@@ -2,10 +2,11 @@ package com.anlw.janusgraph.api.remote.difference;
 
 import java.util.List;
 
-import org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+
+import com.anlw.janusgraph.api.remote.connect.RemoteGraphConnection;
 
 /**
  * 
@@ -15,20 +16,12 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
  */
 public class MethodDiff {
 
-	// 获取远程Server连接
-	public static GraphTraversalSource getConnection() throws Exception {
-		GraphTraversalSource g = AnonymousTraversalSource.traversal()
-				.withRemote("config/client/remote-graph.properties");
-		return g;
-	}
-
 	// in(),in(String... edgeLabels),inE(),inE(String...
 	// edgeLabels),out(),out(String...
 	// edgeLabels),outE(),outE(String... edgeLabels),both(),both(String...
 	// edgeLabels),
 	// bothE(),bothE(String... edgeLabels),inV(),outV,bothV(),otherV()
-	public static void test1() throws Exception {
-		GraphTraversalSource g = getConnection();
+	public static void test1(GraphTraversalSource g) throws Exception {
 		dataForTest1(g);
 		// in():以顶点为基准，获取所有指向该顶点的邻顶点
 		List<Vertex> list1 = g.V().hasLabel("label-c").in().toList();
@@ -123,7 +116,9 @@ public class MethodDiff {
 	}
 
 	public static void main(String[] args) throws Exception {
-		test1();
+		GraphTraversalSource g = RemoteGraphConnection.getGraphTraversalSource();
+		test1(g);
+		RemoteGraphConnection.closeGraphTraversalSource();
 	}
 
 	// 为test1()制造测试数据
