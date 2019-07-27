@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 
  * @author Anlw
- *
+ *`
  * @date May 31, 2019
  */
 public class RemoteGraphConnection {
@@ -39,7 +39,7 @@ public class RemoteGraphConnection {
 	}
 
 	public static void closeGraphTraversalSource() throws Exception {
-		LOGGER.info("closing graphtraversalsource");
+		LOGGER.info("close graph...");
 		try {
 			if (g != null) {
 				// this closes the remote, no need to close the empty graph
