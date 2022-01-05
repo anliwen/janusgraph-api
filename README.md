@@ -13,5 +13,5 @@
 6. Close the graph
 
 ### Note
-1. the server auto-commits per request, so the application code doesn't need to explicitly commit transactions
+1. the server auto-commits per request, so the application code doesn't need to explicitly commit transactions.
     
